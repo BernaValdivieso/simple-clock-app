@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Simple Clock App{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Cargar archivo de Clock In/Out</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('main.upload_file') }}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="clock_ins_file" class="form-label">Archivo Excel de Clock In/Out</label>
+                        <input type="file" class="form-control" id="clock_ins_file" name="clock_ins_file" accept=".xlsx,.xls" required>
+                        <div class="form-text">
+                            El archivo debe contener las columnas: 'Clock-in time' y 'Clock-out time'
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cargar archivo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
