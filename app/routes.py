@@ -55,6 +55,9 @@ def process_file(filename):
             # Obtener la hoja de trabajo
             worksheet = writer.sheets['Sheet1']
             
+            # Agregar filtros a todas las columnas
+            worksheet.auto_filter.ref = worksheet.dimensions
+            
             # Ajustar el ancho de las columnas
             for idx, col in enumerate(df_processed.columns):
                 # Obtener la longitud máxima del contenido de la columna
