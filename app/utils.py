@@ -77,7 +77,13 @@ def process_clock_times(df, interval, decimals='all'):
     df_processed = df_mapped.copy()
     
     # Convertir la columna Date de Excel a formato de fecha legible
-    df_processed['Date'] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df_processed['Date'], unit='D')
+    try:
+        # Primero intentamos convertir directamente a datetime
+        df_processed['Date'] = pd.to_datetime(df_processed['Date'])
+    except:
+        # Si falla, asumimos que es una fecha de Excel y la convertimos
+        df_processed['Date'] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df_processed['Date'].astype(float), unit='D')
+    
     df_processed['Date'] = df_processed['Date'].dt.strftime('%m/%d/%Y')
     
     # Convertir las columnas de tiempo a datetime
