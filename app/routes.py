@@ -12,15 +12,15 @@ def index():
 @main_bp.route('/upload', methods=['POST'])
 def upload_file():
     if 'clock_ins_file' not in request.files:
-        flash('No se seleccionó ningún archivo', 'error')
+        flash('No file selected', 'error')
         return redirect(url_for('main.index'))
     
     clock_ins_file = request.files['clock_ins_file']
     if clock_ins_file.filename == '':
-        flash('No se seleccionó ningún archivo', 'error')
+        flash('No file selected', 'error')
         return redirect(url_for('main.index'))
     
-    # Guardar el archivo
+    # Save the file
     filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], clock_ins_file.filename)
     clock_ins_file.save(filepath)
     
@@ -32,41 +32,41 @@ def process_file(filename):
         return render_template('process.html', filename=filename)
     
     try:
-        # Obtener el intervalo de redondeo
+        # Get rounding interval
         interval = int(request.form.get('interval', 15))
         
-        # Leer el archivo de la hoja específica
+        # Read file from specific sheet
         filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
         df = pd.read_excel(filepath, sheet_name='9. Payroll')
         
-        # Procesar los tiempos
+        # Process times
         df_processed = process_clock_times(df, interval)
         
-        # Guardar el archivo procesado con columnas ajustadas
+        # Save processed file with adjusted columns
         output_filename = f'processed_{filename}'
         output_path = os.path.join(current_app.config['PROCESSED_FOLDER'], output_filename)
         
-        # Crear un ExcelWriter
+        # Create ExcelWriter
         with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
-            # Escribir el DataFrame
+            # Write DataFrame
             df_processed.to_excel(writer, index=False, sheet_name='Sheet1')
             
-            # Obtener la hoja de trabajo
+            # Get worksheet
             worksheet = writer.sheets['Sheet1']
             
-            # Ajustar el ancho de las columnas
+            # Adjust column widths
             for idx, col in enumerate(df_processed.columns):
-                # Obtener la longitud máxima del contenido de la columna
+                # Get maximum content length
                 max_length = max(
-                    df_processed[col].astype(str).apply(len).max(),  # longitud del contenido
-                    len(str(col))  # longitud del nombre de la columna
+                    df_processed[col].astype(str).apply(len).max(),  # content length
+                    len(str(col))  # column name length
                 )
-                # Ajustar el ancho de la columna (agregar un poco de espacio extra)
+                # Adjust column width (add some extra space)
                 worksheet.column_dimensions[chr(65 + idx)].width = max_length + 2
         
         return redirect(url_for('main.download_file', filename=output_filename))
     except Exception as e:
-        flash(f'Error al procesar el archivo: {str(e)}', 'error')
+        flash(f'Error processing file: {str(e)}', 'error')
         return redirect(url_for('main.index'))
 
 @main_bp.route('/download/<filename>')

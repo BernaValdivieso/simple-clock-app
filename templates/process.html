@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}Procesar archivo - Simple Clock App{% endblock %}
+{% block title %}Process File - Simple Clock App{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <h4 class="mb-0">Configurar redondeo de horas</h4>
+                <h4 class="mb-0">Configure Time Rounding</h4>
             </div>
             <div class="card-body">
                 <form action="{{ url_for('main.process_file', filename=filename) }}" method="post">
                     <div class="mb-3">
-                        <label for="interval" class="form-label">Intervalo de redondeo (minutos)</label>
+                        <label for="interval" class="form-label">Rounding Interval (minutes)</label>
                         <select class="form-select" id="interval" name="interval" required>
-                            <option value="5">5 minutos</option>
-                            <option value="10">10 minutos</option>
-                            <option value="15" selected>15 minutos</option>
-                            <option value="30">30 minutos</option>
-                            <option value="60">60 minutos</option>
+                            <option value="5">5 minutes</option>
+                            <option value="10">10 minutes</option>
+                            <option value="15" selected>15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">60 minutes</option>
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">Procesar archivo</button>
+                    <button type="submit" class="btn btn-primary">Process File</button>
                 </form>
             </div>
         </div>
