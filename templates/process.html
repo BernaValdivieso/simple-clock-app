@@ -22,6 +22,19 @@
                         </select>
                     </div>
                     
+                    <div class="mb-3">
+                        <label for="decimals" class="form-label">Decimal Places for Hours</label>
+                        <select class="form-select" id="decimals" name="decimals">
+                            <option value="all">Show all decimals</option>
+                            <option value="0">No decimals (0)</option>
+                            <option value="1">One decimal (0.1)</option>
+                            <option value="2" selected>Two decimals (0.01)</option>
+                            <option value="3">Three decimals (0.001)</option>
+                            <option value="4">Four decimals (0.0001)</option>
+                        </select>
+                        <div class="form-text">Choose how many decimal places you want to see in the hours calculation</div>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary">Process File</button>
                 </form>
             </div>

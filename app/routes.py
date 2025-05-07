@@ -32,36 +32,37 @@ def process_file(filename):
         return render_template('process.html', filename=filename)
     
     try:
-        # Get rounding interval
+        # Obtener el intervalo de redondeo y decimales
         interval = int(request.form.get('interval', 15))
+        decimals = request.form.get('decimals', 'all')
         
-        # Read file from specific sheet
+        # Leer el archivo de la hoja específica
         filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
         df = pd.read_excel(filepath, sheet_name='9. Payroll')
         
-        # Process times
-        df_processed = process_clock_times(df, interval)
+        # Procesar los tiempos
+        df_processed = process_clock_times(df, interval, decimals)
         
-        # Save processed file with adjusted columns
+        # Guardar el archivo procesado con columnas ajustadas
         output_filename = f'processed_{filename}'
         output_path = os.path.join(current_app.config['PROCESSED_FOLDER'], output_filename)
         
-        # Create ExcelWriter
+        # Crear un ExcelWriter
         with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
-            # Write DataFrame
+            # Escribir el DataFrame
             df_processed.to_excel(writer, index=False, sheet_name='Sheet1')
             
-            # Get worksheet
+            # Obtener la hoja de trabajo
             worksheet = writer.sheets['Sheet1']
             
-            # Adjust column widths
+            # Ajustar el ancho de las columnas
             for idx, col in enumerate(df_processed.columns):
-                # Get maximum content length
+                # Obtener la longitud máxima del contenido de la columna
                 max_length = max(
-                    df_processed[col].astype(str).apply(len).max(),  # content length
-                    len(str(col))  # column name length
+                    df_processed[col].astype(str).apply(len).max(),  # longitud del contenido
+                    len(str(col))  # longitud del nombre de la columna
                 )
-                # Adjust column width (add some extra space)
+                # Ajustar el ancho de la columna (agregar un poco de espacio extra)
                 worksheet.column_dimensions[chr(65 + idx)].width = max_length + 2
         
         return redirect(url_for('main.download_file', filename=output_filename))

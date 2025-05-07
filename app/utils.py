@@ -68,7 +68,7 @@ def map_column_names(df):
     
     return df_mapped
 
-def process_clock_times(df, interval):
+def process_clock_times(df, interval, decimals='all'):
     """Procesa los tiempos de entrada y salida con el intervalo especificado."""
     # Mapear los nombres de columnas
     df_mapped = map_column_names(df)
@@ -101,12 +101,18 @@ def process_clock_times(df, interval):
         clock_in = row['Rounded Clock-in']
         clock_out = row['Rounded Clock-out']
         
-        # Calcular la diferencia en horas
-        time_diff = clock_out - clock_in
-        hours = time_diff.total_seconds() / 3600
+        # Si la hora de salida es menor que la de entrada, asumimos que es del día siguiente
+        if clock_out.hour < clock_in.hour:
+            # Agregar 24 horas a la hora de salida
+            hours = (clock_out.hour + 24 - clock_in.hour) + (clock_out.minute - clock_in.minute) / 60
+        else:
+            hours = (clock_out.hour - clock_in.hour) + (clock_out.minute - clock_in.minute) / 60
         
-        # Redondear a 2 decimales
-        return round(hours, 2)
+        # Aplicar el formato de decimales según la selección
+        if decimals == 'all':
+            return hours  # Retornamos el valor sin redondear
+        else:
+            return round(hours, int(decimals))
     
     df_processed['# Hours'] = df_processed.apply(calculate_hours, axis=1)
     
