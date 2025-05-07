@@ -76,6 +76,10 @@ def process_clock_times(df, interval):
     # Crear una copia del DataFrame con las columnas mapeadas
     df_processed = df_mapped.copy()
     
+    # Convertir la columna Date de Excel a formato de fecha legible
+    df_processed['Date'] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df_processed['Date'], unit='D')
+    df_processed['Date'] = df_processed['Date'].dt.strftime('%m/%d/%Y')
+    
     # Convertir las columnas de tiempo a datetime
     df_processed['Rounded Clock-in'] = pd.to_datetime(df_processed['Rounded Clock-in'])
     df_processed['Rounded Clock-out'] = pd.to_datetime(df_processed['Rounded Clock-out'])
