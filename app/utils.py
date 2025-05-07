@@ -38,6 +38,7 @@ def map_column_names(df):
     column_mapping = {
         'Farm name': 'Farm Name',
         'Date': 'Date',
+        'Worker Full Name': 'Worker Full Name',
         'Worker ID': 'Worker ID',
         'Job Name': 'Job Name',
         'Job Tags': 'Job Tag',
@@ -132,7 +133,7 @@ def process_clock_times(df, interval, decimals='all'):
     
     # Reordenar las columnas según el orden especificado
     final_columns = [
-        'Farm Name', 'Date', 'Worker ID', 'Job Name', 'Job Tag',
+        'Farm Name', 'Date', 'Worker Full Name', 'Worker ID', 'Job Name', 'Job Tag',
         'Block Name', 'Piece Name', 'Rounded Clock-in', 'Rounded Clock-out',
         '# Hours', 'Cost per Hour', 'Price Piece', '# of Pieces', 'Cost per Pieces'
     ]
