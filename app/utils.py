@@ -50,7 +50,8 @@ def map_column_names(df):
         'Price $/hr': 'Cost per Hour',
         'Price $/piece': 'Price Piece',
         '# Pieces': '# of Pieces',
-        'Cost per pieces ($)': 'Cost per Pieces'
+        'Cost per pieces ($)': 'Cost per Pieces',
+        'Recording User': 'Recording User'
     }
     
     # Crear un nuevo DataFrame con las columnas mapeadas
@@ -135,7 +136,8 @@ def process_clock_times(df, interval, decimals='all'):
     final_columns = [
         'Farm Name', 'Date', 'Worker Full Name', 'Worker ID', 'Job Name', 'Job Tag',
         'Block Name', 'Piece Name', 'Rounded Clock-in', 'Rounded Clock-out',
-        '# Hours', 'Cost per Hour', 'Price Piece', '# of Pieces', 'Cost per Pieces'
+        '# Hours', 'Cost per Hour', 'Price Piece', '# of Pieces', 'Cost per Pieces',
+        'Recording User'
     ]
     
     return df_processed[final_columns] 
