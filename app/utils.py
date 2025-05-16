@@ -25,6 +25,18 @@ def round_to_nearest(dt, interval):
     
     return dt.replace(minute=rounded_minutes, second=0)
 
+def format_time(t, time_format='24'):
+    """Formatea la hora según el formato especificado."""
+    if pd.isna(t):
+        return None
+    
+    if time_format == '12':
+        # Formato 12 horas (1:00 PM)
+        return t.strftime('%I:%M %p')
+    else:
+        # Formato 24 horas (13:00)
+        return t.strftime('%H:%M')
+
 def find_column(df, possible_names):
     """Busca una columna en el DataFrame usando varios nombres posibles."""
     for col in df.columns:
@@ -70,7 +82,7 @@ def map_column_names(df):
     
     return df_mapped
 
-def process_clock_times(df, interval, decimals='all'):
+def process_clock_times(df, interval, decimals='all', time_format='24'):
     """Procesa los tiempos de entrada y salida con el intervalo especificado."""
     # Mapear los nombres de columnas
     df_mapped = map_column_names(df)
@@ -124,12 +136,12 @@ def process_clock_times(df, interval, decimals='all'):
     
     df_processed['# Hours'] = df_processed.apply(calculate_hours, axis=1)
     
-    # Convertir las columnas redondeadas a formato de hora sin microsegundos
+    # Convertir las columnas redondeadas a formato de hora según el formato seleccionado
     df_processed['Rounded Clock-in'] = df_processed['Rounded Clock-in'].apply(
-        lambda x: time(x.hour, x.minute, x.second) if pd.notna(x) else None
+        lambda x: format_time(x, time_format) if pd.notna(x) else None
     )
     df_processed['Rounded Clock-out'] = df_processed['Rounded Clock-out'].apply(
-        lambda x: time(x.hour, x.minute, x.second) if pd.notna(x) else None
+        lambda x: format_time(x, time_format) if pd.notna(x) else None
     )
     
     # Reordenar las columnas según el orden especificado

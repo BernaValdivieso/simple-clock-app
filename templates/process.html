@@ -23,6 +23,15 @@
                     </div>
                     
                     <div class="mb-3">
+                        <label for="time_format" class="form-label">Time Format</label>
+                        <select class="form-select" id="time_format" name="time_format" required>
+                            <option value="12">12-hour format (e.g., 1:00 PM)</option>
+                            <option value="24" selected>24-hour format (e.g., 13:00)</option>
+                        </select>
+                        <div class="form-text">Choose how you want to display the time in the output file</div>
+                    </div>
+                    
+                    <div class="mb-3">
                         <label for="decimals" class="form-label">Decimal Places for Hours</label>
                         <select class="form-select" id="decimals" name="decimals">
                             <option value="all">Show all decimals</option>

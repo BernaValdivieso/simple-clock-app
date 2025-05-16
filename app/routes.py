@@ -32,8 +32,9 @@ def process_file(filename):
         return render_template('process.html', filename=filename)
     
     try:
-        # Obtener el intervalo de redondeo y decimales
+        # Obtener el intervalo de redondeo, formato de hora y decimales
         interval = int(request.form.get('interval', 15))
+        time_format = request.form.get('time_format', '24')
         decimals = request.form.get('decimals', 'all')
         
         # Leer el archivo de la hoja específica
@@ -41,7 +42,7 @@ def process_file(filename):
         df = pd.read_excel(filepath, sheet_name='9. Payroll')
         
         # Procesar los tiempos
-        df_processed = process_clock_times(df, interval, decimals)
+        df_processed = process_clock_times(df, interval, decimals, time_format)
         
         # Guardar el archivo procesado con columnas ajustadas
         output_filename = f'processed_{filename}'
